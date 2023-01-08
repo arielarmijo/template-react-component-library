@@ -4,6 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import postcss from "rollup-plugin-postcss";
 import dts from "rollup-plugin-dts";
+import del from "rollup-plugin-delete";
 
 export default [
   {
@@ -17,10 +18,11 @@ export default [
       {
         file: "dist/esm/index.js",
         format: "esm",
-        sourcemap: true
+        sourcemap: true  
       }
     ],
     plugins: [
+      del({ targets: "dist/*", verbose: true }),
       external(),
       resolve(),
       commonjs(),
@@ -29,7 +31,7 @@ export default [
     ]
   },
   {
-    input: "dist/esm/index.d.ts",
+    input: "dist/esm/types/index.d.ts",
     output: [ { file: "dist/index.d.ts", format: "esm" }],
     plugins: [ dts() ],
     external: [ /\.s?css$/ ]
